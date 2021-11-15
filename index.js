@@ -33,6 +33,13 @@ async function run() {
             const bookings = await cursor.toArray();
             res.send(bookings);
         });
+        // GET API FOR A SINGLE BOOKING
+        app.get('/bookings/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const booking = await bookingCollection.findOne(query);
+            res.json(booking);
+        });
         // GET API FOR A SINGLE PACKAGE
         app.get('/packages/:id', async (req, res) => {
             const id = req.params.id;
@@ -40,7 +47,7 @@ async function run() {
             const package = await packageCollection.findOne(query);
             // console.log("Find a package");
             res.json(package);
-        })
+        });
         // POST API FOR PACKAGE
         app.post('/packages', async (req, res) => {
             const newPackage = req.body;
