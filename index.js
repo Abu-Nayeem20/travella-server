@@ -86,6 +86,20 @@ async function run() {
             const result = await bookingCollection.updateOne(filter, updatedDoc, options);
             res.json(result);
         });
+        
+        // UPDATE API
+        app.put('/bookings/:id', async (req, res) => {
+            const id = req.params.id;
+            const payment = req.body;
+            const filter = { _id: ObjectId(id) };
+            const updatedDoc = {
+                $set: {
+                    payment: payment
+                }
+            };
+            const result = await bookingCollection.updateOne(filter, updatedDoc);
+            res.json(result);
+        });
 
         app.post('/create-payment-intent', async (req, res) => {
             const paymentInfo = req.body;
