@@ -76,30 +76,32 @@ async function run() {
         app.put('/bookings/:id', async (req, res) => {
             const id = req.params.id;
             const updatedBooking = req.body;
+            const payment = req.body;
             const filter = { _id: ObjectId(id) };
             const options = { upsert: true };
             const updatedDoc = {
                 $set: {
-                    status: updatedBooking.status
+                    status: updatedBooking.status,
+                    payment: payment
                 }
             };
             const result = await bookingCollection.updateOne(filter, updatedDoc, options);
             res.json(result);
         });
-        
+
         // UPDATE API
-        app.put('/bookings/:id', async (req, res) => {
-            const id = req.params.id;
-            const payment = req.body;
-            const filter = { _id: ObjectId(id) };
-            const updatedDoc = {
-                $set: {
-                    payment: payment
-                }
-            };
-            const result = await bookingCollection.updateOne(filter, updatedDoc);
-            res.json(result);
-        });
+        // app.put('/bookings/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const payment = req.body;
+        //     const filter = { _id: ObjectId(id) };
+        //     const updatedDoc = {
+        //         $set: {
+        //             payment: payment
+        //         }
+        //     };
+        //     const result = await bookingCollection.updateOne(filter, updatedDoc);
+        //     res.json(result);
+        // });
 
         app.post('/create-payment-intent', async (req, res) => {
             const paymentInfo = req.body;
