@@ -73,48 +73,49 @@ async function run() {
             res.json(result);
         });
         // UPDATE API
-        // app.put('/bookings/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const updatedBooking = req.body;
-        //     const filter = { _id: ObjectId(id) };
-        //     const options = { upsert: true };
-        //     const updatedDoc = {
-        //         $set: {
-        //             status: updatedBooking.status,
-        //         }
-        //     };
-        //     const result = await bookingCollection.updateOne(filter, updatedDoc, options);
-        //     res.json(result);
-        // });
-
-        // UPDATE API
         app.put('/bookings/:id', async (req, res) => {
             const id = req.params.id;
-            const payment = req.body;
+            const updatedBooking = req.body;
             const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
             const updatedDoc = {
                 $set: {
-                    payment: payment
+                    status: updatedBooking.status,
                 }
             };
-            const result = await bookingCollection.updateOne(filter, updatedDoc);
+            const result = await bookingCollection.updateOne(filter, updatedDoc, options);
             res.json(result);
         });
 
-        app.post('/create-payment-intent', async (req, res) => {
-            const paymentInfo = req.body;
-            const amount = paymentInfo.finalPrice * 100;
+        // UPDATE API FOR PAYMENT GATEWAY ---STRIPE---
+        // NOW THIS FUNCTION JUST HIDDEN  
+        // app.put('/bookings/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const payment = req.body;
+        //     const filter = { _id: ObjectId(id) };
+        //     const updatedDoc = {
+        //         $set: {
+        //             payment: payment
+        //         }
+        //     };
+        //     const result = await bookingCollection.updateOne(filter, updatedDoc);
+        //     res.json(result);
+        // });
+
+        // app.post('/create-payment-intent', async (req, res) => {
+        //     const paymentInfo = req.body;
+        //     const amount = paymentInfo.finalPrice * 100;
           
-            const paymentIntent = await stripe.paymentIntents.create({
-              amount: amount,
-              currency: 'usd',
-              payment_method_types: ['card']
-            });
+        //     const paymentIntent = await stripe.paymentIntents.create({
+        //       amount: amount,
+        //       currency: 'usd',
+        //       payment_method_types: ['card']
+        //     });
           
-            res.send({
-              clientSecret: paymentIntent.client_secret,
-            });
-          });
+        //     res.send({
+        //       clientSecret: paymentIntent.client_secret,
+        //     });
+        //   });
 
     }
     finally {
